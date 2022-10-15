@@ -21,7 +21,10 @@ if __name__ == '__main__':
 
     prefix = ''
     result = []
+    it1 = 0
     for d in data:
+        it1 += 1
+        print(f'Парсинг {it1}/{len(data)} соревнования: {it1/len(data)}%')
         if 'Code Jam' in d['adventure_name'] and 'Code Jam to' not in d['adventure_name']:
             prefix = 'codejam'
         elif 'Hash Code' in d['adventure_name']:
@@ -38,7 +41,10 @@ if __name__ == '__main__':
 
         adventure_id = d['adventure_id']
         adventure_name = d['adventure_name']
+        it2 = 0
         for user_score in d['user_scores']:
+            it2 += 1
+            print(f"Парсинг результатов {it2}/{len(d['user_scores'])}: {it2/len(d['user_scores'])}%")
             user_name = user_score['competitor']['displayname']
             user_id = user_score['competitor']['id']
 
