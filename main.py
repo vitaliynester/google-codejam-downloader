@@ -1,4 +1,5 @@
 import json
+import math
 import os
 import time
 from collections import Counter
@@ -7,6 +8,17 @@ import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+
+n = 10
+k = 0
+
+
+def split_list(data_list):
+    per_list = math.floor(len(data_list) / n)
+    chunks = [data_list[x:x + per_list] for x in range(0, len(data_list), per_list)]
+    return chunks
+
 
 if __name__ == '__main__':
     with open('./data.json', 'r') as f:
@@ -64,7 +76,7 @@ if __name__ == '__main__':
     data = filtered_result
     options = uc.ChromeOptions()
     prefs = {
-        "download.default_directory": "/home/vitaly/PycharmProjects/google-codejam-downloader/uploads/",
+        "download.default_directory": "/Users/vitaly_posadnev/Develop/PythonProjects/google-codejam-webview/uploads",
         "profile.default_content_settings.popups": 0,
     }
     options.add_experimental_option("prefs", prefs)
@@ -102,9 +114,9 @@ if __name__ == '__main__':
             challenge_name = challenge['challenge']['title']
             print(f"Парсинг результатов этапа {it2 + 1}/{len(d['challenges'])}: {(it2 + 1) / len(d['challenges'])}%")
 
-            for it3, user_score in enumerate(challenge['user_scores']):
-                print(
-                    f"Парсинг результатов {it3 + 1}/{len(challenge['user_scores'])}: {(it3 + 1) / len(challenge['user_scores'])}%")
+            user_scores = split_list(challenge['user_scores'])
+            for it3, user_score in enumerate(user_scores[k]):
+                print(f"Парсинг результатов {it3 + 1}/{len(user_scores[k])}: {(it3 + 1) / len(user_scores[k])}%")
                 user_id = user_score['competitor']['id']
                 user_name = user_score['competitor']['displayname']
 
